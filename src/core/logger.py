@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime
-
+from ..utils.singleton import Singleton
 
 class GuiLogHandler(logging.Handler):
     """Обработчик логов для GUI (LoggerWidget)."""
@@ -16,9 +16,9 @@ class GuiLogHandler(logging.Handler):
             self.widget.append_log(level, msg)
 
 
-class AppLogger:
+class AppLogger(Singleton):
     """Глобальный логгер приложения."""
-    def __init__(self, logs_dir="data/logs"):
+    def init(self, logs_dir="data/logs"):
         os.makedirs(logs_dir, exist_ok=True)
 
         log_filename = datetime.now().strftime("%Y-%m-%d_%H-%M-%S.log")
@@ -38,7 +38,9 @@ class AppLogger:
         self.logger.addHandler(self.gui_handler)
 
         self.info("Сессия логирования начата")
-
+    def __init__(self):
+        pass
+    
     def attach_widget(self, widget):
         """Подключить LoggerWidget к логгеру."""
         self.gui_handler.widget = widget
