@@ -37,8 +37,8 @@ def main():
 
     # === Настройки ===
     settings = SettingsManager()
-
-    app.setStyle(settings.get("theme") or "Fusion")
+    if settings.get("theme"):
+        app.setStyle(settings.get("theme"))
 
 
     # === Логгер ===
